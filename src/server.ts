@@ -1,9 +1,10 @@
 import { app } from "./app";
+import { env } from "./env";
 
 // Inicializa o servidor
 app
   .listen({
-    port: 3333,
+    port: env.PORT,
   })
   .then(() => {
     console.log("HTTP Server Running!");
