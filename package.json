@@ -1,0 +1,20 @@
+{
+  "name": "jitterbite-order-challenge",
+  "version": "1.0.0",
+  "description": "A challenge of orders to jitterbite company.",
+  "main": "index.js",
+  "scripts": {
+    "dev": ""
+  },
+  "keywords": [],
+  "author": "Fernando Brino",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "fastify": "^4.21.0",
+    "zod": "^3.22.2"
+  }
+}
