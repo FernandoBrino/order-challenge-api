@@ -1,6 +1,8 @@
 import { ItemsRepository } from "@/repositories/items-repository";
 import { OrdersRepository } from "@/repositories/orders-repository";
+import { UsersRepository } from "@/repositories/users-repository";
 import { Order } from "@prisma/client";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 type Item = {
   idItem: string;
@@ -9,6 +11,7 @@ type Item = {
 };
 
 interface CreateOrderServiceRequest {
+  userId: string;
   numeroPedido: string;
   valorTotal: number;
   dataCriacao: string;
@@ -22,15 +25,23 @@ interface CreateOrderServiceResponse {
 export class CreateOrderService {
   constructor(
     private ordersRepository: OrdersRepository,
-    private itemsRepository: ItemsRepository
+    private itemsRepository: ItemsRepository,
+    private usersRepository: UsersRepository
   ) {}
 
   async execute({
+    userId,
     numeroPedido,
     valorTotal,
     dataCriacao,
     items,
   }: CreateOrderServiceRequest): Promise<CreateOrderServiceResponse> {
+    const user = await this.usersRepository.findById(userId);
+
+    if (!user) {
+      throw new ResourceNotFoundError();
+    }
+
     // Mapeia e muda a estrutura dos items
     const formattedItems = items.map(
       ({ idItem, quantidadeItem, valorItem }) => ({
@@ -43,6 +54,7 @@ export class CreateOrderService {
 
     // Insere os dados no banco
     const order = await this.ordersRepository.create({
+      userId,
       orderId: numeroPedido,
       value: valorTotal,
       creationDate: dataCriacao,

@@ -19,6 +19,7 @@ export class GetOrderByIdService {
     // Busca um pedido pelo id (número do pedido) enviado
     const order = await this.ordersRepository.findById(id);
 
+    // Retorna um erro caso não exista um pedido referente a id
     if (!order) {
       throw new ResourceNotFoundError();
     }
