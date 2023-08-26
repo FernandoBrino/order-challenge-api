@@ -1,4 +1,4 @@
-import { Item, Order, Prisma } from "@prisma/client";
+import { Order, Prisma } from "@prisma/client";
 import { OrdersRepository } from "../orders-repository";
 import { randomUUID } from "crypto";
 
@@ -8,8 +8,9 @@ import { randomUUID } from "crypto";
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
-  async create(data: Prisma.OrderCreateInput) {
+  async create(data: Prisma.OrderUncheckedCreateInput) {
     const order = {
+      userId: data.userId,
       orderId: data.orderId ?? randomUUID(),
       value: data.value,
       creationDate: data.creationDate
