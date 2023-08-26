@@ -35,4 +35,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     return order;
   }
+
+  async delete(id: string) {
+    const order = this.items.findIndex((order) => order.orderId === id);
+
+    if (order < 0) {
+      return null;
+    }
+
+    this.items.splice(order, 1);
+  }
 }
