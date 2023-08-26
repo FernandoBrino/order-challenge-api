@@ -1,6 +1,7 @@
 import fastifyJwt from "@fastify/jwt";
 import fastify from "fastify";
 import { env } from "./env";
+import { usersRoutes } from "./http/controllers/users/routes";
 
 export const app = fastify();
 
@@ -11,3 +12,5 @@ app.register(fastifyJwt, {
     expiresIn: "10m",
   },
 });
+
+app.register(usersRoutes);
