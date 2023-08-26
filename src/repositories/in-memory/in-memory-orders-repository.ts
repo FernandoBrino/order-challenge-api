@@ -1,4 +1,4 @@
-import { Order, Prisma } from "@prisma/client";
+import { Item, Order, Prisma } from "@prisma/client";
 import { OrdersRepository } from "../orders-repository";
 import { randomUUID } from "crypto";
 
@@ -34,6 +34,31 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     }
 
     return order;
+  }
+
+  async update(
+    id: string,
+    data: {
+      value: number;
+    }
+  ) {
+    const order = this.items.find((order) => order.orderId === id);
+    const orderIndex = this.items.findIndex((order) => order.orderId === id);
+
+    if (!order) {
+      return null;
+    }
+
+    const updatedOrder = {
+      ...order,
+      ...data,
+    };
+
+    this.items[orderIndex] = updatedOrder;
+
+    const savedOrder = this.items[orderIndex];
+
+    return savedOrder;
   }
 
   async delete(id: string) {
