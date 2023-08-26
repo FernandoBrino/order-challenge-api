@@ -3,20 +3,30 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { UpdateOrderByIdService } from "./update-order-by-id";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { InMemoryItemsRepository } from "@/repositories/in-memory/in-memory-items-repository";
+import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 
 let ordersRepository: InMemoryOrdersRepository;
 let itemsRepository: InMemoryItemsRepository;
+let usersRepository: InMemoryUsersRepository;
 let sut: UpdateOrderByIdService;
 
 describe("Update Order By Id Service", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     ordersRepository = new InMemoryOrdersRepository();
+    usersRepository = new InMemoryUsersRepository();
     itemsRepository = new InMemoryItemsRepository();
     sut = new UpdateOrderByIdService(ordersRepository, itemsRepository);
+
+    await usersRepository.create({
+      id: "1",
+      email: "example@example.com",
+      password: "123456",
+    });
   });
 
   it("shoul be able to update a order by id", async () => {
     const createdOrder = await ordersRepository.create({
+      userId: "1",
       orderId: "123",
       value: 100,
       creationDate: new Date(),
@@ -33,6 +43,7 @@ describe("Update Order By Id Service", () => {
 
     const { order } = await sut.execute({
       id: createdOrder.orderId,
+      userId: "1",
       data: {
         value: 1000,
         items: [
@@ -64,6 +75,7 @@ describe("Update Order By Id Service", () => {
     await expect(() =>
       sut.execute({
         id: "non-existing-id",
+        userId: "non-existing-id",
         data: {
           value: 0,
           items: [],
