@@ -11,6 +11,7 @@ type UpdateOrder = {
 
 interface UpdateOrderByIdServiceRequest {
   id: string;
+  userId: string;
   data: UpdateOrder;
 }
 
@@ -26,10 +27,13 @@ export class UpdateOrderByIdService {
 
   async execute({
     id,
+    userId,
     data,
   }: UpdateOrderByIdServiceRequest): Promise<UpdateOrderByIdServiceResponse> {
     // Atualiza os valores dentro do pedido.
-    const order = await this.ordersRepository.update(id, { value: data.value });
+    const order = await this.ordersRepository.update(id, userId, {
+      value: data.value,
+    });
 
     // Atualiza os itens referentes ao pedido
     const items = await this.itemsRepository.updateMany(id, data.items);

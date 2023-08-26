@@ -9,6 +9,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
   async create(data: Prisma.OrderUncheckedCreateInput) {
+    // Cria um novo pedido
     const order = {
       userId: data.userId,
       orderId: data.orderId ?? randomUUID(),
@@ -23,12 +24,22 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order;
   }
 
-  async findMany() {
-    return this.items;
+  // Busca todos pedidos
+  async findMany(userId: string) {
+    const items = this.items.filter((order) => order.userId === userId);
+
+    if (!items) {
+      return null;
+    }
+
+    return items;
   }
 
-  async findById(id: string) {
-    const order = this.items.find((order) => order.orderId === id);
+  // Busca um pedido pelo id
+  async findById(id: string, userId: string) {
+    const order = this.items.find(
+      (order) => order.orderId === id && order.userId === userId
+    );
 
     if (!order) {
       return null;
@@ -37,14 +48,20 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order;
   }
 
+  // Atualiza um pedido
   async update(
     id: string,
+    userId: string,
     data: {
       value: number;
     }
   ) {
-    const order = this.items.find((order) => order.orderId === id);
-    const orderIndex = this.items.findIndex((order) => order.orderId === id);
+    const order = this.items.find(
+      (order) => order.orderId === id && order.userId === userId
+    );
+    const orderIndex = this.items.findIndex(
+      (order) => order.orderId === id && order.userId === userId
+    );
 
     if (!order) {
       return null;
@@ -62,9 +79,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return savedOrder;
   }
 
-  async delete(id: string) {
-    const order = this.items.findIndex((order) => order.orderId === id);
+  // Deleta um pedido
+  async delete(id: string, userId: string) {
+    // Se não houver um item com o id do pedido retorna -1
+    const order = this.items.findIndex(
+      (order) => order.orderId === id && order.userId === userId
+    );
 
+    // se for menor que 0 é por que o pedido não foi achado
     if (order < 0) {
       return null;
     }

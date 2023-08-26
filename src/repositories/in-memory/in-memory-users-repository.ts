@@ -5,6 +5,7 @@ import { Prisma, User } from "@prisma/client";
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = [];
 
+  // Busca um usuário pelo Id
   async findById(id: string) {
     const user = this.items.find((item) => item.id === id);
 
@@ -15,6 +16,7 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user;
   }
 
+  // Busca um usuário pelo email
   async findByEmail(email: string) {
     const user = this.items.find((item) => item.email === email);
 
@@ -25,6 +27,7 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user;
   }
 
+  // Cria um novo usuário
   async create(data: Prisma.UserCreateInput) {
     const user = {
       id: randomUUID(),

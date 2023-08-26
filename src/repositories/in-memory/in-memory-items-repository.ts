@@ -9,7 +9,9 @@ import { UpdateItem } from "@/@types/update-item";
 export class InMemoryItemsRepository implements ItemsRepository {
   public items: Item[] = [];
 
+  // Cria novos itens
   async create(data: Prisma.ItemUncheckedCreateInput[]) {
+    // Cria um item por vez
     for (let item of data) {
       this.items.push({
         productId: item.productId ?? randomUUID(),
@@ -22,9 +24,12 @@ export class InMemoryItemsRepository implements ItemsRepository {
     return this.items;
   }
 
+  // Atualiza itens de um pedido
   async updateMany(id: string, data: UpdateItem[]) {
+    // Busca pelos items de um pedido
     let items = this.items.filter((item) => item.orderId === id);
 
+    // Atualiza os itens do pedido
     items = items.filter((item) => {
       data.map((product) => {
         if (item.productId === product.productId) {

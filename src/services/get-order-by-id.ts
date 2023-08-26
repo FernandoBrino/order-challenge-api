@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface GetOrderByIdServiceRequest {
   id: string;
+  userId: string;
 }
 
 interface GetOrderByIdServiceResponse {
@@ -15,9 +16,10 @@ export class GetOrderByIdService {
 
   async execute({
     id,
+    userId,
   }: GetOrderByIdServiceRequest): Promise<GetOrderByIdServiceResponse> {
     // Busca um pedido pelo id (número do pedido) enviado
-    const order = await this.ordersRepository.findById(id);
+    const order = await this.ordersRepository.findById(id, userId);
 
     // Retorna um erro caso não exista um pedido referente a id
     if (!order) {
