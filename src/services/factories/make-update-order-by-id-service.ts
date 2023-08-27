@@ -2,7 +2,7 @@ import { PrismaOrdersRepository } from "@/repositories/prisma/prisma-orders-repo
 import { PrismaItemsRepository } from "@/repositories/prisma/prisma-items-repository";
 import { UpdateOrderByIdService } from "../update-order-by-id";
 
-export function makeCreateOrderService() {
+export function makeUpdateOrderByIdService() {
   const ordersRepository = new PrismaOrdersRepository();
   const itemsRepository = new PrismaItemsRepository();
   const service = new UpdateOrderByIdService(ordersRepository, itemsRepository);
