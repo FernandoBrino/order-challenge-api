@@ -5,14 +5,14 @@ import { ItemsRepository } from "@/repositories/items-repository";
 import { UpdateItem } from "@/@types/update-item";
 
 type UpdateOrder = {
-  value: number;
+  valorTotal: number;
   items: UpdateItem[];
 };
 
 interface UpdateOrderByIdServiceRequest {
   id: string;
   userId: string;
-  data: UpdateOrder;
+  dataToUpdate: UpdateOrder;
 }
 
 interface UpdateOrderByIdServiceResponse {
@@ -28,15 +28,23 @@ export class UpdateOrderByIdService {
   async execute({
     id,
     userId,
-    data,
+    dataToUpdate,
   }: UpdateOrderByIdServiceRequest): Promise<UpdateOrderByIdServiceResponse> {
+    const formattedItems = dataToUpdate.items.map(
+      ({ idItem, quantidadeItem, valorItem }) => ({
+        productId: idItem,
+        quantity: quantidadeItem,
+        price: valorItem,
+      })
+    );
+
     // Atualiza os valores dentro do pedido.
     const order = await this.ordersRepository.update(id, userId, {
-      value: data.value,
+      value: dataToUpdate.valorTotal,
     });
 
     // Atualiza os itens referentes ao pedido
-    const items = await this.itemsRepository.updateMany(id, data.items);
+    const items = await this.itemsRepository.updateMany(id, formattedItems);
 
     // Retorna um erro caso não exista um pedido referente a id
     if (!order || !items) {
