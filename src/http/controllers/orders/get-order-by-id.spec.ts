@@ -40,7 +40,7 @@ describe("Get Order By Id (e2e)", () => {
       .send();
 
     expect(response.statusCode).toEqual(200);
-    expect(response.body.order).toEqual(
+    expect(response.body).toEqual(
       expect.objectContaining({
         order: expect.objectContaining({
           orderId: "1234",

@@ -3,7 +3,6 @@ import fastify from "fastify";
 import { ZodError } from "zod";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
-import { SwaggerTheme } from "swagger-themes";
 
 import { env } from "./env";
 import { usersRoutes } from "./http/controllers/users/routes";
