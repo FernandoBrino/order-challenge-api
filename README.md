@@ -43,19 +43,25 @@ npm install
 docker compose up
 ```
 
-5. Rode as migrations do projeto:
+5. Inicie o banco de dados:
+6. 
+ ```shell
+docker compose start
+```
+
+6. Rode as migrations do projeto:
 
 ```shell
 npx prisma migrate dev
 ```
 
-6. Inicie o servidor de desenvolvimento:
+7. Inicie o servidor de desenvolvimento:
 
 ```shell
 npm start
 ```
 
-5. O servidor estará em execução localmente em `http://localhost:3333`.
+8. O servidor estará em execução localmente em `http://localhost:3333`.
 
 ## Utilização
 
@@ -63,6 +69,20 @@ npm start
 
 Certifique-se de substituir `:id` pelos identificadores reais dos usuários ou produtos ao fazer requisições específicas.
 Certifique-se de adicionar `Bearer ${token}` na autorização.
+
+## Testes
+
+Para rodar os testes unitários basta executar no terminal: 
+```shell
+npm run test
+```
+
+Para rodar os testes e2e basta executar no terminal: 
+```shell
+npm run test:e2e
+```
+
+Lembre-se que para rodar os teste e2e é necessário que o banco esteja executando no docker.
 
 ## Contribuição
 
