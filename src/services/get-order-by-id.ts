@@ -1,6 +1,7 @@
 import { OrdersRepository } from "@/repositories/orders-repository";
-import { Order } from "@prisma/client";
+import { Item, Order } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
+import { ItemsRepository } from "@/repositories/items-repository";
 
 interface GetOrderByIdServiceRequest {
   id: string;
@@ -9,10 +10,14 @@ interface GetOrderByIdServiceRequest {
 
 interface GetOrderByIdServiceResponse {
   order: Order;
+  orderItems: Item[];
 }
 
 export class GetOrderByIdService {
-  constructor(private ordersRepository: OrdersRepository) {}
+  constructor(
+    private ordersRepository: OrdersRepository,
+    private itemsRepository: ItemsRepository
+  ) {}
 
   async execute({
     id,
@@ -20,6 +25,7 @@ export class GetOrderByIdService {
   }: GetOrderByIdServiceRequest): Promise<GetOrderByIdServiceResponse> {
     // Busca um pedido pelo id (número do pedido) enviado
     const order = await this.ordersRepository.findById(id, userId);
+    const orderItems = await this.itemsRepository.getItemsByOrderId(id);
 
     // Retorna um erro caso não exista um pedido referente a id
     if (!order) {
@@ -28,6 +34,7 @@ export class GetOrderByIdService {
 
     return {
       order,
+      orderItems,
     };
   }
 }
