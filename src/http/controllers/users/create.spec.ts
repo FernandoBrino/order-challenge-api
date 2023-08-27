@@ -12,11 +12,11 @@ describe("Create User (e2e)", () => {
   });
 
   it("should be able to create", async () => {
-    const org = await request(app.server).post("/users").send({
+    const response = await request(app.server).post("/users").send({
       password: "123456",
       email: "org@example.com",
     });
 
-    expect(org.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(201);
   });
 });
