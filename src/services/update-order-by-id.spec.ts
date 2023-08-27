@@ -32,7 +32,7 @@ describe("Update Order By Id Service", () => {
       creationDate: new Date(),
     });
 
-    const orderItem = await itemsRepository.create([
+    await itemsRepository.create([
       {
         productId: "1234",
         quantity: 100,
@@ -41,19 +41,17 @@ describe("Update Order By Id Service", () => {
       },
     ]);
 
-    const { order } = await sut.execute({
+    const { order, orderItems } = await sut.execute({
       id: createdOrder.orderId,
       userId: "1",
-      data: {
-        value: 1000,
-        items: [
-          {
-            productId: "1234",
-            quantity: 100,
-            price: 3000,
-          },
-        ],
-      },
+      valorTotal: 1000,
+      items: [
+        {
+          idItem: "1234",
+          quantidadeItem: 100,
+          valorItem: 3000,
+        },
+      ],
     });
 
     expect(order).toEqual(
@@ -62,7 +60,7 @@ describe("Update Order By Id Service", () => {
       })
     );
 
-    expect(orderItem).toEqual([
+    expect(orderItems).toEqual([
       expect.objectContaining({
         productId: "1234",
         quantity: 100,
@@ -76,10 +74,6 @@ describe("Update Order By Id Service", () => {
       sut.execute({
         id: "non-existing-id",
         userId: "non-existing-id",
-        data: {
-          value: 0,
-          items: [],
-        },
       })
     ).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
