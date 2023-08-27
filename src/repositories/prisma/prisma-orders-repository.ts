@@ -11,15 +11,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
     return order;
   }
 
-  async delete(id: string, userId: string): Promise<void | null> {
-    await prisma.order.delete({
-      where: {
-        orderId: id,
-        userId,
-      },
-    });
-  }
-
   async findById(id: string, userId: string) {
     const order = await prisma.order.findUnique({
       where: {
@@ -51,5 +42,14 @@ export class PrismaOrdersRepository implements OrdersRepository {
     });
 
     return order;
+  }
+
+  async delete(id: string, userId: string): Promise<void | null> {
+    await prisma.order.delete({
+      where: {
+        orderId: id,
+        userId,
+      },
+    });
   }
 }

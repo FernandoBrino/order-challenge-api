@@ -7,18 +7,15 @@ export async function getOrderById(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const getPetRouteSchema = z.object({
+  const getOrderRouteSchema = z.object({
     id: z.string(),
   });
 
-  const { id } = getPetRouteSchema.parse(request.params);
+  const { id } = getOrderRouteSchema.parse(request.params);
 
   const getOrderByIdService = makeGetOrderByIdService();
 
   const { sub } = request.user;
-
-  console.log("id", id);
-  console.log("sub", sub);
 
   try {
     const { order } = await getOrderByIdService.execute({ id, userId: sub });

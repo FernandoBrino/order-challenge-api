@@ -1,3 +1,4 @@
+import { ResourceNotFoundError } from "@/services/errors/resource-not-found-error";
 import { makeFetchAllOrdersService } from "@/services/factories/make-fetch-all-orders-service";
 import { FastifyReply, FastifyRequest } from "fastify";
 
@@ -9,9 +10,17 @@ export async function fetchAllOrders(
 
   const fetchAllOrdersService = makeFetchAllOrdersService();
 
-  const { orders } = await fetchAllOrdersService.execute({
-    userId: sub,
-  });
+  try {
+    const { orders } = await fetchAllOrdersService.execute({
+      userId: sub,
+    });
 
-  return reply.status(200).send({ orders });
+    return reply.status(200).send({ orders });
+  } catch (error) {
+    if (error instanceof ResourceNotFoundError) {
+      return reply.status(404).send();
+    }
+
+    throw error;
+  }
 }
