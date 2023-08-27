@@ -38,13 +38,13 @@ npm install
 
 
 4. Rode o Docker compose:
-
+   
 ```shell
 docker compose up
 ```
 
 5. Inicie o banco de dados:
-6. 
+   
  ```shell
 docker compose start
 ```
