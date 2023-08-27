@@ -36,4 +36,14 @@ export class PrismaItemsRepository implements ItemsRepository {
 
     return items;
   }
+
+  async getItemsByOrderId(id: string) {
+    const items = await prisma.item.findMany({
+      where: {
+        orderId: id,
+      },
+    });
+
+    return items;
+  }
 }

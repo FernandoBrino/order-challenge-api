@@ -19,14 +19,18 @@ export class AuthenticateService {
     email,
     password,
   }: AuthenticateServiceRequest): Promise<AuthenticateServiceResponse> {
+    // Verifica se o usuário já existe
     const user = await this.usersRepository.findByEmail(email);
 
+    // Retorna um error caso o usuário não esteja cadastrado
     if (!user) {
       throw new InvalidCredentialsError();
     }
 
+    // Compara o password recebido com o do usuário no banco de dados
     const doesPasswordMatches = await compare(password, user.password);
 
+    // Caso o password recebido esteja icorreto retorna um erro
     if (!doesPasswordMatches) {
       throw new InvalidCredentialsError();
     }

@@ -1,7 +1,7 @@
 import { Item, Prisma } from "@prisma/client";
 import { ItemsRepository } from "../items-repository";
 import { randomUUID } from "crypto";
-import { UpdateItem } from "@/@types/update-item";
+import { UpdateItemFormatted } from "@/@types/update-item";
 
 // In memory repository é um design pattern, utilizado para simular um banco de dados
 // quando o uso do mesmo não é necessário ou viável, em operações de CRUD por exemplo nos testes unitários.
@@ -25,7 +25,7 @@ export class InMemoryItemsRepository implements ItemsRepository {
   }
 
   // Atualiza itens de um pedido
-  async updateMany(id: string, data: UpdateItem[]) {
+  async updateMany(id: string, data: UpdateItemFormatted[]) {
     // Busca pelos items de um pedido
     let items = this.items.filter((item) => item.orderId === id);
 
@@ -39,6 +39,12 @@ export class InMemoryItemsRepository implements ItemsRepository {
       });
       return item;
     });
+
+    return items;
+  }
+
+  async getItemsByOrderId(id: string) {
+    const items = this.items.filter((item) => item.orderId === id);
 
     return items;
   }

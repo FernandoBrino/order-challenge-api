@@ -4,7 +4,7 @@ import { UsersRepository } from "@/repositories/users-repository";
 import { Order } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
-type Item = {
+type ItemRequest = {
   idItem: string;
   quantidadeItem: number;
   valorItem: number;
@@ -15,7 +15,7 @@ interface CreateOrderServiceRequest {
   numeroPedido: string;
   valorTotal: number;
   dataCriacao: string;
-  items: Item[];
+  items: ItemRequest[];
 }
 
 interface CreateOrderServiceResponse {
@@ -36,8 +36,10 @@ export class CreateOrderService {
     dataCriacao,
     items,
   }: CreateOrderServiceRequest): Promise<CreateOrderServiceResponse> {
+    // Verifica se o usuário existe
     const user = await this.usersRepository.findById(userId);
 
+    // Retorna um erro caso o usuário já exista
     if (!user) {
       throw new ResourceNotFoundError();
     }
