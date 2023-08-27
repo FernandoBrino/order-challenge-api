@@ -26,7 +26,7 @@ app.register(fastifyJwt, {
   await app.register(fastifySwagger, {
     swagger: {
       info: {
-        title: "Order Management Api",
+        title: "Order Challenge Api",
         description:
           "Uma api para gerenciamento de pedidos proposto pela empresa Jitterbit",
         version: "0.1.0",
