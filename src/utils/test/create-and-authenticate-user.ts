@@ -3,6 +3,7 @@ import { hash } from "bcryptjs";
 import { FastifyInstance } from "fastify";
 import request from "supertest";
 
+// Cria e autentica um usuário para utilizar nos testes
 export async function createAndAuthenticateUser(app: FastifyInstance) {
   const user = await prisma.user.create({
     data: {

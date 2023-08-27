@@ -19,14 +19,18 @@ export class CreateUserService {
     email,
     password,
   }: CreateUserServiceRequest): Promise<CreateUserServiceResponse> {
+    // Cria um hash do password recebido
     const password_hash = await hash(password, 6);
 
+    // Verifica se o email recebido já foi cadastrado
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
+    // Caso exista um usuário com o email recebido já cadastrado retorna erro
     if (userWithSameEmail) {
       throw new UserAlreadyExistsError();
     }
 
+    // Cadastra o usuário
     const user = await this.usersRepository.create({
       email,
       password: password_hash,

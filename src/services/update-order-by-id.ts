@@ -1,22 +1,19 @@
 import { OrdersRepository } from "@/repositories/orders-repository";
-import { Order } from "@prisma/client";
+import { Item, Order } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { ItemsRepository } from "@/repositories/items-repository";
 import { UpdateItem } from "@/@types/update-item";
 
-type UpdateOrder = {
-  valorTotal: number;
-  items: UpdateItem[];
-};
-
 interface UpdateOrderByIdServiceRequest {
   id: string;
   userId: string;
-  dataToUpdate: UpdateOrder;
+  valorTotal?: number;
+  items?: UpdateItem[];
 }
 
 interface UpdateOrderByIdServiceResponse {
   order: Order;
+  orderItems: Item[];
 }
 
 export class UpdateOrderByIdService {
@@ -28,31 +25,42 @@ export class UpdateOrderByIdService {
   async execute({
     id,
     userId,
-    dataToUpdate,
+    valorTotal,
+    items,
   }: UpdateOrderByIdServiceRequest): Promise<UpdateOrderByIdServiceResponse> {
-    const formattedItems = dataToUpdate.items.map(
-      ({ idItem, quantidadeItem, valorItem }) => ({
-        productId: idItem,
-        quantity: quantidadeItem,
-        price: valorItem,
-      })
-    );
+    let order;
+    let orderItems;
 
     // Atualiza os valores dentro do pedido.
-    const order = await this.ordersRepository.update(id, userId, {
-      value: dataToUpdate.valorTotal,
-    });
+    if (valorTotal) {
+      order = await this.ordersRepository.update(id, userId, {
+        value: valorTotal,
+      });
+    }
 
     // Atualiza os itens referentes ao pedido
-    const items = await this.itemsRepository.updateMany(id, formattedItems);
+    if (items) {
+      // Mapeia e formata o objeto recebido devidamente
+      const formattedItems = items.map(
+        ({ idItem, quantidadeItem, valorItem }) => ({
+          productId: idItem,
+          quantity: quantidadeItem,
+          price: valorItem,
+        })
+      );
+
+      // Atualiza os itens
+      orderItems = await this.itemsRepository.updateMany(id, formattedItems);
+    }
 
     // Retorna um erro caso não exista um pedido referente a id
-    if (!order || !items) {
+    if (!order || !orderItems) {
       throw new ResourceNotFoundError();
     }
 
     return {
       order,
+      orderItems,
     };
   }
 }

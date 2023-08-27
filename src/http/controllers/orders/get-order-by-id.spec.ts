@@ -25,6 +25,15 @@ describe("Get Order By Id (e2e)", () => {
       },
     });
 
+    await prisma.item.create({
+      data: {
+        orderId: order.orderId,
+        productId: "12345",
+        quantity: 5,
+        price: 500,
+      },
+    });
+
     const response = await request(app.server)
       .get(`/order/${order.orderId}`)
       .set("Authorization", `Bearer ${token}`)
@@ -33,8 +42,16 @@ describe("Get Order By Id (e2e)", () => {
     expect(response.statusCode).toEqual(200);
     expect(response.body.order).toEqual(
       expect.objectContaining({
-        orderId: "1234",
-        value: 1000,
+        order: expect.objectContaining({
+          orderId: "1234",
+          value: 1000,
+        }),
+        items: expect.arrayContaining([
+          expect.objectContaining({
+            quantity: 5,
+            price: 500,
+          }),
+        ]),
       })
     );
   });

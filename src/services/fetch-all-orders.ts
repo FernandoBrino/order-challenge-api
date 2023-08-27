@@ -19,6 +19,7 @@ export class FetchAllOrdersService {
     // Buscar por todos pedidos
     const orders = await this.ordersRepository.findMany(userId);
 
+    // Retorna erro caso o usuário não seja encontrado
     if (!orders) {
       throw new ResourceNotFoundError();
     }
