@@ -1,5 +1,5 @@
 export type UpdateItem = {
-  productId: string;
-  quantity?: number;
-  price?: number;
+  idItem: string;
+  quantidadeItem?: number;
+  valorItem?: number;
 };
