@@ -65,9 +65,10 @@ npm start
 
 ## Utilização
 
-É possível realizar todas ações da api acessando `http://localhost:3333/documentation`, onde estará disponível Swagger da api.
+**É possível realizar todas ações da api acessando `http://localhost:3333/documentation`, onde estará disponível Swagger da api.**
 
 Certifique-se de substituir `:id` pelos identificadores reais dos usuários ou produtos ao fazer requisições específicas.
+
 Certifique-se de adicionar `Bearer ${token}` na autorização.
 
 ## Testes
