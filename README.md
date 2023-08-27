@@ -61,7 +61,9 @@ npx prisma migrate dev
 npm start
 ```
 
-8. O servidor estará em execução localmente em `http://localhost:3333`.
+8. Crie o arquivo .env e copie o .env.example para dentro dele.
+
+10. O servidor estará em execução localmente em `http://localhost:3333`.
 
 ## Utilização
 
