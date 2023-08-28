@@ -1,4 +1,4 @@
-export const createOrderByIdSchema = {
+export const getOrderByIdSchema = {
   description: "Buscar um pedido pelo id",
   tags: ["orders"],
   summary: "Buscar por um pedido",
@@ -10,13 +10,13 @@ export const createOrderByIdSchema = {
   params: {
     type: "object",
     properties: {
-      numeroPedido: {
+      id: {
         type: "string",
         description: "Id do pedido",
       },
     },
   },
-  response: {
+  responses: {
     200: {
       description: "Success",
       type: "object",

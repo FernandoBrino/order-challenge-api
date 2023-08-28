@@ -10,13 +10,13 @@ export const deleteOrderSchema = {
   params: {
     type: "object",
     properties: {
-      numeroPedido: {
+      id: {
         type: "string",
         description: "Id do pedido",
       },
     },
   },
-  response: {
+  responses: {
     204: {
       description: "Success with no content",
       type: "null",

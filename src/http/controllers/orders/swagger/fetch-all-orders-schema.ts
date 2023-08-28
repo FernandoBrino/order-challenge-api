@@ -7,7 +7,7 @@ export const fetchAllOrdersSchema = {
       BearerAuth: [],
     },
   ],
-  response: {
+  responses: {
     200: {
       description: "Success",
       type: "object",

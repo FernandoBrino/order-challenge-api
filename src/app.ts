@@ -44,24 +44,6 @@ app.register(fastifyJwt, {
   // Registra uma rota para a interface do swagger-ui
   await app.register(fastifySwaggerUi, {
     routePrefix: "/documentation",
-    uiConfig: {
-      docExpansion: "list",
-      deepLinking: false,
-    },
-    uiHooks: {
-      onRequest: function (request, reply, next) {
-        next();
-      },
-      preHandler: function (request, reply, next) {
-        next();
-      },
-    },
-    staticCSP: true,
-    transformStaticCSP: (header) => header,
-    transformSpecification: (swaggerObject, request, reply) => {
-      return swaggerObject;
-    },
-    transformSpecificationClone: true,
   });
 })();
 

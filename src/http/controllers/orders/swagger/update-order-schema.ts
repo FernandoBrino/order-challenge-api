@@ -10,7 +10,7 @@ export const updateOrderByIdSchema = {
   params: {
     type: "object",
     properties: {
-      numeroPedido: {
+      id: {
         type: "string",
         description: "Id do pedido",
       },
@@ -45,7 +45,7 @@ export const updateOrderByIdSchema = {
       },
     },
   },
-  response: {
+  responses: {
     200: {
       description: "Success",
       type: "object",

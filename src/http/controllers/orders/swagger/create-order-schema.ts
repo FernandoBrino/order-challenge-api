@@ -44,7 +44,7 @@ export const createOrderSchema = {
       },
     },
   },
-  response: {
+  responses: {
     201: {
       description: "Created successfully",
       type: "null",
