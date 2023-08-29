@@ -53,7 +53,6 @@ export class CreateOrderService {
         price: valorItem,
       })
     );
-
     // Insere os dados no banco
     const order = await this.ordersRepository.create({
       userId,

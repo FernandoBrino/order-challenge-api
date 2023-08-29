@@ -4,9 +4,9 @@ import { ItemsRepository } from "../items-repository";
 
 export class PrismaItemsRepository implements ItemsRepository {
   async create(data: Prisma.ItemUncheckedCreateInput[]) {
-    const items = await prisma.$transaction(
-      data.map((item) => prisma.item.create({ data: item }))
-    );
+    const items = await prisma.item.createMany({
+      data,
+    });
 
     return items;
   }
@@ -43,6 +43,8 @@ export class PrismaItemsRepository implements ItemsRepository {
         orderId: id,
       },
     });
+
+    console.log(items);
 
     return items;
   }
